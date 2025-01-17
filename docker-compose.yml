@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=nestjs
+      - DB_PASSWORD=nestjspassword
+      - DB_NAME=nestjsdb
+    volumes:
+      - .:/usr/src/app
+    depends_on:
+      - postgres
+    networks:
+      - nestjs-network
+
+  postgres:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_USER: nestjs
+      POSTGRES_PASSWORD: nestjspassword
+      POSTGRES_DB: nestjsdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - nestjs-network
+
+networks:
+  nestjs-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
