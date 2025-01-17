@@ -13,7 +13,7 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    const user = this.userRepository.create(createUserDto); // Cria a entidade em memória
+    const user = this.userRepository.create(createUserDto); 
     return await this.userRepository.save(user); 
   }
 
@@ -21,23 +21,23 @@ export class UsersService {
     return this.userRepository.find();
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     await this.exists(id);
     return this.userRepository.findOne({ where: { id } });
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
+  async update(id: string, updateUserDto: UpdateUserDto) {
     await this.exists(id);
     return this.userRepository.update(id, updateUserDto);
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     await this.exists(id);
     return this.userRepository.delete(id);
   }
 
   // função para verificar se o usuário existe
-  async exists(id: number) {
+  async exists(id: string) {
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) {
       throw new NotFoundException(`o usuário ${id} não existe`);
